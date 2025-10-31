@@ -1,11 +1,18 @@
 [build]
   command = "npm install && npm run build"
-  base = "."
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  publish = ".next/static"
 
 [build.environment]
   NODE_VERSION = "18"
   NPM_FLAGS = "--legacy-peer-deps"
+
+# Configuração para Next.js sem plugin
+[functions]
+  node_bundler = "esbuild"
+
+# Redirects para SPA behavior
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
