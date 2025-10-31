@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { gameService } from '@/lib/gameService'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     const { userId, gameId, amount, challenge } = await request.json()

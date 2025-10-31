@@ -1,6 +1,5 @@
 [build]
   command = "npm install && npm run build"
-  base = "."
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
