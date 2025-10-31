@@ -1,0 +1,16 @@
+# Configuração alternativa caso o plugin Next.js não funcione
+# Esta configuração usa o build padrão do Next.js sem o plugin
+
+[build]
+  command = "npm install && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
