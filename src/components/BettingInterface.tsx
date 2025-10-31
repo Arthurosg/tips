@@ -19,10 +19,6 @@ export default function BettingInterface({ gameId, gameName, player, onBetPlaced
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    loadChallenges()
-  }, [gameId])
-
   const loadChallenges = async () => {
     try {
       const response = await fetch(`/api/games/challenges?gameId=${gameId}`)
@@ -35,6 +31,11 @@ export default function BettingInterface({ gameId, gameName, player, onBetPlaced
       console.error('Erro ao carregar desafios:', err)
     }
   }
+
+  useEffect(() => {
+    loadChallenges()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameId])
 
   const handlePlaceBet = async () => {
     if (!selectedChallenge) {

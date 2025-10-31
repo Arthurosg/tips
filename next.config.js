@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // Permite warnings durante o build, mas mantém erros bloqueando
+    ignoreDuringBuilds: false,
+  },
+  typescript: {
+    // Permite o build mesmo com erros de TypeScript (opcional)
+    ignoreBuildErrors: false,
+  },
   async headers() {
     return [
       {
