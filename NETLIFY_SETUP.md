@@ -1,30 +1,71 @@
 # Configuração Netlify - Resolver erro "publish directory same as base directory"
 
 ## Problema
-O plugin `@netlify/plugin-nextjs` não permite que o publish directory seja o mesmo que o base directory.
+O plugin `@netlify/plugin-nextjs` não permite que o publish directory seja o mesmo que o base directory. O Netlify está usando `/opt/build/repo` como padrão, causando conflito.
 
-## Solução
+## Solução CRÍTICA - No Painel da Netlify:
 
-### No Painel da Netlify:
+### Passo a passo detalhado:
 
-1. Acesse **Site settings** → **Build & deploy** → **Build settings**
+1. Acesse https://app.netlify.com e selecione seu site
 
-2. **IMPORTANTE - Configure os seguintes campos:**
+2. Clique em **Site settings** (ícone de engrenagem no topo)
 
-   - **Base directory**: DEIXE EM BRANCO (não coloque nada, nem `.`)
-   - **Publish directory**: DEIXE EM BRANCO (o plugin Next.js gerencia isso automaticamente)
-   - **Build command**: DEIXE EM BRANCO (o `netlify.toml` já define)
+3. No menu lateral esquerdo, clique em **Build & deploy**
 
-3. **Salve as configurações**
+4. Clique em **Build settings**
 
-4. **Faça um novo deploy** (ou aguarde o deploy automático do push)
+5. **ROLE A PÁGINA ATÉ A SEÇÃO "Build & deploy settings"**
+
+6. Procure pelos seguintes campos e **APAGUE COMPLETAMENTE** qualquer valor:
+
+   **⚠️ Base directory:**
+   - Se houver algum valor (mesmo que seja `.` ou `/`), APAGUE TUDO
+   - Deixe o campo completamente vazio/branco
+   - Não coloque nenhum caractere, nem espaço
+
+   **⚠️ Publish directory:**
+   - Se houver algum valor (como `.next` ou qualquer coisa), APAGUE TUDO
+   - Deixe o campo completamente vazio/branco
+   - Este é o campo MAIS IMPORTANTE - deve estar 100% vazio
+
+   **⚠️ Build command:**
+   - Se houver algum valor, APAGUE TUDO
+   - Deixe vazio (o `netlify.toml` já define)
+
+7. **Clique em "Save"** ou "Save settings" (geralmente no topo ou rodapé da página)
+
+8. **Verifique novamente** que os campos estão realmente vazios (não com espaços)
+
+9. Vá em **Deploys** → **Trigger deploy** → **Deploy site** para fazer um novo deploy
+
+### Verificação Visual:
+
+Os campos devem aparecer assim:
+```
+Base directory: [campo completamente vazio]
+Publish directory: [campo completamente vazio]  
+Build command: [campo completamente vazio]
+```
+
+**NÃO deve ter:**
+- Pontos (`.`)
+- Barras (`/`)
+- Espaços em branco
+- Qualquer texto
 
 ### Por que isso acontece?
 
-O plugin `@netlify/plugin-nextjs` cria automaticamente um diretório `.opennext` com os arquivos processados. Quando você especifica um publish directory no painel (mesmo que seja o padrão `/opt/build/repo`), o plugin detecta que é o mesmo do base directory e gera o erro.
+O plugin `@netlify/plugin-nextjs` cria automaticamente um diretório `.opennext` durante o build. Quando qualquer valor está definido no campo "Publish directory" do painel (mesmo que seja o padrão automático), o plugin detecta que é igual ao base directory e gera o erro.
 
 ### Arquivos de configuração
 
-- `netlify.toml`: Já configurado corretamente (sem publish directory especificado)
-- O plugin Next.js gerencia tudo automaticamente
+- `netlify.toml`: Configurado com `base = "."` e sem `publish` (deixa o plugin gerenciar)
+- O plugin Next.js gerencia o publish directory automaticamente criando `.opennext`
+
+### Se ainda não funcionar:
+
+Se após seguir todos os passos o erro persistir, pode ser necessário:
+1. Desconectar e reconectar o repositório GitHub
+2. Ou remover o plugin e usar configuração manual (arquivo `netlify.toml.backup` como referência)
 
