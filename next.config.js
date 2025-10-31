@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Para Netlify sem plugin, usar export estático
+  // ATENÇÃO: Isso desabilita rotas de API server-side
+  output: 'export',
   eslint: {
     // Permite warnings durante o build, mas mantém erros bloqueando
     ignoreDuringBuilds: false,
