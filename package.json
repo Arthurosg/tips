@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:netlify": "next build && cp -r .next .netlify-build || xcopy /E /I .next .netlify-build",
     "start": "next start",
     "lint": "next lint"
   },
